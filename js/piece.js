@@ -6,7 +6,19 @@ class Piece {
 		// Set x & y
 		this._x = x;
 		this._y = y;
-		this._color = color || choose('red', 'blue', 'green');
+		// this._color = color || choose('red', 'blue', 'green');
+		this._color = color || choose(
+			'#C62828',
+			'#AD1457',
+			'#4527A0',
+			'#2E7D32',
+			'#00695C',
+			'#283593',
+			'#00695C',
+			'#FF6F00',
+			'#4E342E',
+			'#37474F'
+		);
 		// Create tile instances
 		this.tiles = tiles.map(t => new Tile(this, t[0], t[1]));
 		// Determine edges

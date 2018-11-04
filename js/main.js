@@ -37,3 +37,11 @@ document.on('DOMContentLoaded', () => {
 	window.on('resize', resize);
 	resize();
 });
+
+function irandom(n) {
+	return Math.floor(Math.random() * n);
+}
+
+function choose(...args) {
+	return args[irandom(args.length)];
+}

@@ -8,15 +8,89 @@ class Grid {
 
 	// Adds a random piece to the grid
 	addPiece() {
-		let index = irandom(PIECES.length);
-		// TODO: confirm that this piece will fit on the board,
-		// else try next index
-		const piece = new Piece(PIECES[index]);
-		this.pieces.push(piece);
-		piece.grid = this;
-		this.element.append(piece.element);
-		// Check whether this completes any lines
-		this.check();
+		// Helper
+		let wasPlaced = false;
+		const helper = (piece, x, y) => {
+			if (this.canPlace(piece, x, y)) {
+				piece.x = x;
+				piece.y = y;
+				wasPlaced = true;
+				return true;
+			}
+			return false;
+		};
+		// Index of first shape to try
+		const index = irandom(PIECES.length);
+		// Attempt to determine a possible shape and place it
+		for (let i = 0; i < PIECES.length; ++ i) {
+			// Create a piece using this shape
+			const piece = new Piece(PIECES[(index + i) % PIECES.length]);
+			// Look for a place to put this
+			if (irandom(100) < 50) {
+				top: for (let x = 0; x < GRID_SIZE; ++ x) {
+					if (irandom(100) < 50) {
+						for (let y = 0; y < GRID_SIZE; ++ y) {
+							if (helper(piece, x, y)) {
+								break top;
+							}
+						}
+					} else {
+						for (let y = GRID_SIZE; y --; ) {
+							if (helper(piece, x, y)) {
+								break top;
+							}
+						}
+					}
+				}
+			} else {
+				top: for (let x = GRID_SIZE; x --; ) {
+					if (irandom(100) < 50) {
+						for (let y = 0; y < GRID_SIZE; ++ y) {
+							if (helper(piece, x, y)) {
+								break top;
+							}
+						}
+					} else {
+						for (let y = GRID_SIZE; y --; ) {
+							if (helper(piece, x, y)) {
+								break top;
+							}
+						}
+					}
+				}
+			}
+			// We found somewhere to place this
+			if (wasPlaced) {
+				this.pieces.push(piece);
+				piece.grid = this;
+				this.element.append(piece.element);
+				// Check whether this completes any lines
+				this.check();
+				// Success!
+				return true;
+			}
+		}
+		// // Game over
+		alert('Game over');
+		location.reload();
+	}
+
+	// Determines whether a piece can be placed at a given location
+	canPlace(piece, x, y) {
+		for (let tile of piece.tiles) {
+			const tx = x + tile.relX;
+			const ty = y + tile.relY;
+			// Check in bounds
+			if (tx < 0 || ty < 0 || tx >= GRID_SIZE || ty >= GRID_SIZE) {
+				return false;
+			}
+			// Check current tiles
+			if (this.tileAt(tx, ty, piece)) {
+				return false;
+			}
+		}
+		// No issue!
+		return true;
 	}
 
 	// Move the pieces on the board in a direction
@@ -198,12 +272,5 @@ const PIECES = [
 		[0, 1],
 		[0, 2]
 	],
+	// TODO: L/J
 ];
-
-function irandom(n) {
-	return Math.floor(Math.random() * n);
-}
-
-function choose(...args) {
-	return args[irandom(args.length)];
-}
