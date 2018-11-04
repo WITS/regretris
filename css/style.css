@@ -22,3 +22,59 @@
 	height: 9em;
 	border-radius: 0.5em;
 }
+
+.tile.border-top {
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+}
+
+.tile.border-bottom {
+	border-bottom-left-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.tile.border-left {
+	border-top-left-radius: 0;
+	border-bottom-left-radius: 0;
+}
+
+.tile.border-right {
+	border-top-right-radius: 0;
+	border-bottom-right-radius: 0;
+}
+
+.tile .top,
+.tile .bottom,
+.tile .left,
+.tile .right {
+	position: absolute;
+	background: inherit;
+	width: 1em;
+	height: 1em;
+}
+
+.tile .top,
+.tile .bottom {
+	width: 100%;
+}
+
+.tile .top {
+	bottom: 100%;
+}
+
+.tile .bottom {
+	top: 100%;
+}
+
+.tile .left,
+.tile .right {
+	height: 100%;
+}
+
+.tile .left {
+	right: 100%;
+}
+
+.tile .right {
+	left: 100%;
+}

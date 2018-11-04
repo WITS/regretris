@@ -266,7 +266,23 @@ class Tile {
 				top: `${TILE_SIZE * this.relY}em`
 			})
 			.init(el => {
-				// TODO: handle edges
+				// Edges
+				if (this.top) {
+					el.addClass('border-top');
+					el.append($new('.top'));
+				}
+				if (this.bottom) {
+					el.addClass('border-bottom');
+					el.append($new('.bottom'));
+				}
+				if (this.left) {
+					el.addClass('border-left');
+					el.append($new('.left'));
+				}
+				if (this.right) {
+					el.addClass('border-right');
+					el.append($new('.right'));
+				}
 			})
 			.element();
 	}
