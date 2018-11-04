@@ -225,6 +225,27 @@ class Grid {
 			piece.grid = this;
 			this.element.append(piece.element);
 		}
+		// Animate out
+		GRID.element.append($new('.cleared-line')
+			.style({
+				top: `${y * TILE_SIZE}em`,
+				width: `${GRID_W * TILE_SIZE}em`
+			})
+			.init(el => {
+				Transition.animate(el, {
+					from: {
+						opacity: 0.87,
+						transform: `scale(1)`
+					},
+					to: {
+						opacity: 0,
+						transform: `scale(1.12)`
+					}
+				}, 250).then(() => {
+					el.remove();
+				});
+			})
+		);
 	}
 
 	createElement() {
