@@ -137,6 +137,11 @@ class Grid {
 			// Nothing happened :(
 			break;
 		}
+		// If no pieces actually moved
+		if (moved.size === 0) {
+			// Stop here
+			return;
+		}
 		const duration = 250;
 		this.canMove = false;
 		// Animations
