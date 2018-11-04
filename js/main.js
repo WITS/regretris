@@ -45,3 +45,7 @@ function irandom(n) {
 function choose(...args) {
 	return args[irandom(args.length)];
 }
+
+function sleep(n) {
+	return new Promise(r => setTimeout(() => r(), n));
+}

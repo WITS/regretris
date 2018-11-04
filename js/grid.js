@@ -4,11 +4,12 @@ class Grid {
 
 	constructor() {
 		this.pieces = [];
+		this.moveQueue = [];
 		this.canMove = true;
 	}
 
 	// Adds a random piece to the grid
-	addPiece() {
+	async addPiece() {
 		// Helper
 		let wasPlaced = false;
 		const helper = (piece, x, y) => {
@@ -76,6 +77,8 @@ class Grid {
 						transform: 'scale(1)'
 					}
 				}, 250);
+				// Wait a bit
+				await sleep(250);
 				// Check whether this completes any lines
 				this.check();
 				// Success!
@@ -106,9 +109,11 @@ class Grid {
 	}
 
 	// Move the pieces on the board in a direction
-	move(x = 0, y = 0) {
+	async move(x = 0, y = 0) {
 		// If moving is disabled
 		if (!this.canMove) {
+			// Queue up move
+			this.moveQueue.push([x, y]);
 			// Stop here
 			return;
 		}
@@ -139,14 +144,18 @@ class Grid {
 				aspectRatio: 'none'
 			});
 		}
-		setTimeout(() => {
-			// Check for lines
-			this.check();
-			// Add new piece
-			this.addPiece();
-			// Renable moving
-			this.canMove = true;
-		}, 250);
+		await sleep(duration);
+		// Check for lines
+		this.check();
+		// Add new piece
+		await this.addPiece();
+		// Renable moving
+		this.canMove = true;
+		// If there's something in the move queue
+		if (this.moveQueue.length !== 0) {
+			const [ x, y ] = this.moveQueue.splice(0, 1)[0];
+			this.move(x, y);
+		}
 	}
 
 	// Check whether any tile exists at (x, y)
@@ -174,16 +183,16 @@ class Grid {
 			// Clear line
 			this.clearY(y);
 		}
-		// Vert
-		top: for (let x = 0; x < GRID_SIZE; ++ x) {
-			for (let y = 0; y < GRID_SIZE; ++ y) {
-				if (!this.tileAt(x, y)) {
-					continue top;
-				}
-			}
-			// Clear line
-			this.clearX(x);
-		}
+		// // Vert
+		// top: for (let x = 0; x < GRID_SIZE; ++ x) {
+		// 	for (let y = 0; y < GRID_SIZE; ++ y) {
+		// 		if (!this.tileAt(x, y)) {
+		// 			continue top;
+		// 		}
+		// 	}
+		// 	// Clear line
+		// 	this.clearX(x);
+		// }
 	}
 
 	clearX(x) {
