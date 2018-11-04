@@ -1,4 +1,5 @@
-const GRID_SIZE = 10;
+const GRID_W = 10;
+const GRID_H = 16;
 
 class Grid {
 
@@ -29,15 +30,15 @@ class Grid {
 			const piece = new Piece(PIECES[(index + i) % PIECES.length]);
 			// Look for a place to put this
 			if (irandom(100) < 50) {
-				top: for (let x = 0; x < GRID_SIZE; ++ x) {
+				top: for (let x = 0; x < GRID_W; ++ x) {
 					if (irandom(100) < 50) {
-						for (let y = 0; y < GRID_SIZE; ++ y) {
+						for (let y = 0; y < GRID_H; ++ y) {
 							if (helper(piece, x, y)) {
 								break top;
 							}
 						}
 					} else {
-						for (let y = GRID_SIZE; y --; ) {
+						for (let y = GRID_H; y --; ) {
 							if (helper(piece, x, y)) {
 								break top;
 							}
@@ -45,15 +46,15 @@ class Grid {
 					}
 				}
 			} else {
-				top: for (let x = GRID_SIZE; x --; ) {
+				top: for (let x = GRID_W; x --; ) {
 					if (irandom(100) < 50) {
-						for (let y = 0; y < GRID_SIZE; ++ y) {
+						for (let y = 0; y < GRID_H; ++ y) {
 							if (helper(piece, x, y)) {
 								break top;
 							}
 						}
 					} else {
-						for (let y = GRID_SIZE; y --; ) {
+						for (let y = GRID_H; y --; ) {
 							if (helper(piece, x, y)) {
 								break top;
 							}
@@ -96,7 +97,7 @@ class Grid {
 			const tx = x + tile.relX;
 			const ty = y + tile.relY;
 			// Check in bounds
-			if (tx < 0 || ty < 0 || tx >= GRID_SIZE || ty >= GRID_SIZE) {
+			if (tx < 0 || ty < 0 || tx >= GRID_W || ty >= GRID_H) {
 				return false;
 			}
 			// Check current tiles
@@ -174,8 +175,8 @@ class Grid {
 	// Check for completed lines
 	check() {
 		// Hor
-		top: for (let y = 0; y < GRID_SIZE; ++ y) {
-			for (let x = 0; x < GRID_SIZE; ++ x) {
+		top: for (let y = 0; y < GRID_H; ++ y) {
+			for (let x = 0; x < GRID_W; ++ x) {
 				if (!this.tileAt(x, y)) {
 					continue top;
 				}
@@ -184,8 +185,8 @@ class Grid {
 			this.clearY(y);
 		}
 		// // Vert
-		// top: for (let x = 0; x < GRID_SIZE; ++ x) {
-		// 	for (let y = 0; y < GRID_SIZE; ++ y) {
+		// top: for (let x = 0; x < GRID_W; ++ x) {
+		// 	for (let y = 0; y < GRID_H; ++ y) {
 		// 		if (!this.tileAt(x, y)) {
 		// 			continue top;
 		// 		}
@@ -225,8 +226,8 @@ class Grid {
 		return $new('.grid')
 			.init(el => {
 				// Create hints
-				for (let x = 0; x < GRID_SIZE; ++ x) {
-					for (let y = 0; y < GRID_SIZE; ++ y) {
+				for (let x = 0; x < GRID_W; ++ x) {
+					for (let y = 0; y < GRID_H; ++ y) {
 						el.append($new('.empty')
 							.style({
 								left: `${TILE_SIZE * x}em`,

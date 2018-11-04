@@ -109,7 +109,7 @@ class Piece {
 		// Check whether each tile is still valid
 		for (let tile of this.tiles) {
 			if (tile.x < 0 || tile.y < 0 ||
-				tile.x >= GRID_SIZE || tile.y >= GRID_SIZE ||
+				tile.x >= GRID_W || tile.y >= GRID_H ||
 				this.grid.tileAt(tile.x, tile.y, this)) {
 				// Failed to move
 				this.x = px;

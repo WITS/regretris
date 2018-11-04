@@ -28,9 +28,10 @@ document.on('DOMContentLoaded', () => {
 
 	const resize = () => {
 		const size =
-			Math.min(window.innerWidth, window.innerHeight)
-			/ (GRID_SIZE + 0.1)
-			/ 10;
+			Math.min(
+				window.innerWidth / (GRID_W + 0.1) / 10,
+				window.innerHeight / (GRID_H + 0.1) / 10
+			);
 		GRID.element.style.fontSize = `${size}px`;
 	};
 
