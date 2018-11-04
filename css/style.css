@@ -1,6 +1,8 @@
 .grid {
-	position: relative;
+	position: fixed;
 	font-size: 8px;
+	left: 1em;
+	top: 1em;
 }
 
 .empty {

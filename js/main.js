@@ -25,4 +25,15 @@ document.on('DOMContentLoaded', () => {
 				break;
 		}
 	});
+
+	const resize = () => {
+		const size =
+			Math.min(window.innerWidth, window.innerHeight)
+			/ (GRID_SIZE + 0.1)
+			/ 10;
+		GRID.element.style.fontSize = `${size}px`;
+	};
+
+	window.on('resize', resize);
+	resize();
 });
