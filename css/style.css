@@ -2,6 +2,7 @@
 	position: fixed;
 	font-size: 8px;
 	left: 1em;
+	left: calc(50% - 49.5em);
 	top: 1em;
 }
 
