@@ -4,6 +4,7 @@ class Grid {
 
 	constructor() {
 		this.pieces = [];
+		this.canMove = true;
 	}
 
 	// Adds a random piece to the grid
@@ -64,6 +65,17 @@ class Grid {
 				this.pieces.push(piece);
 				piece.grid = this;
 				this.element.append(piece.element);
+				// Animate in
+				Transition.animate(piece.element, {
+					from: {
+						opacity: 0,
+						transform: 'scale(0.5)'
+					},
+					to: {
+						opacity: 1,
+						transform: 'scale(1)'
+					}
+				}, 250);
 				// Check whether this completes any lines
 				this.check();
 				// Success!
@@ -95,20 +107,46 @@ class Grid {
 
 	// Move the pieces on the board in a direction
 	move(x = 0, y = 0) {
+		// If moving is disabled
+		if (!this.canMove) {
+			// Stop here
+			return;
+		}
+		const moved = new Map();
 		top: for (;;) {
 			// Loop through each piece
 			for (let piece of this.pieces) {
 				if (piece.move(x, y)) {
+					// Keep track of starting snapshot
+					if (!moved.has(piece)) {
+						piece.x -= x;
+						piece.y -= y;
+						moved.set(piece, Transition.snapshot(piece.element));
+						piece.x += x;
+						piece.y += y;
+					}
 					continue top;
 				}
 			}
 			// Nothing happened :(
 			break;
 		}
-		// Check for lines
-		this.check();
-		// Add new piece
-		this.addPiece();
+		const duration = 250;
+		this.canMove = false;
+		// Animations
+		for (let [piece, snapshot] of moved.entries()) {
+			Transition.from(piece.element, snapshot, duration, {
+				aspectRatio: 'none'
+			});
+		}
+		setTimeout(() => {
+			// Check for lines
+			this.check();
+			// Add new piece
+			this.addPiece();
+			// Renable moving
+			this.canMove = true;
+		}, 250);
 	}
 
 	// Check whether any tile exists at (x, y)
