@@ -1,0 +1,24 @@
+.grid {
+	position: relative;
+	font-size: 8px;
+}
+
+.empty {
+	position: absolute;
+	width: 9em;
+	height: 9em;
+	border-radius: 0.5em;
+	background: whitesmoke;
+}
+
+.piece {
+	position: absolute;
+}
+
+.tile {
+	position: absolute;
+	background: inherit;
+	width: 9em;
+	height: 9em;
+	border-radius: 0.5em;
+}

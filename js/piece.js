@@ -1,0 +1,280 @@
+const TILE_SIZE = 10;
+
+class Piece {
+
+	constructor(tiles, x = 0, y = 0, color = null) {
+		// Set x & y
+		this._x = x;
+		this._y = y;
+		this._color = color || choose('red', 'blue', 'green');
+		// Create tile instances
+		this.tiles = tiles.map(t => new Tile(this, t[0], t[1]));
+		// Determine edges
+		for (let tile of this.tiles) {
+			if (tile.top === null) {
+				const other = this.relTileAt(tile.relX, tile.relY - 1);
+				if (other) {
+					tile.top = other;
+					other.bottom = tile;
+				}
+			}
+			if (tile.bottom === null) {
+				const other = this.relTileAt(tile.relX, tile.relY + 1);
+				if (other) {
+					tile.bottom = other;
+					other.top = tile;
+				}
+			}
+			if (tile.left === null) {
+				const other = this.relTileAt(tile.relX - 1, tile.relY);
+				if (other) {
+					tile.left = other;
+					other.right = tile;
+				}
+			}
+			if (tile.right === null) {
+				const other = this.relTileAt(tile.relX + 1, tile.relY);
+				if (other) {
+					tile.right = other;
+					other.left = tile;
+				}
+			}
+		}
+	}
+
+	set x(n) {
+		this._x = n;
+		this.element.style.left = `${TILE_SIZE * n}em`;
+	}
+
+	get x() {
+		return this._x;
+	}
+
+	set y(n) {
+		this._y = n;
+		this.element.style.top = `${TILE_SIZE * n}em`;
+	}
+
+	get y() {
+		return this._y;
+	}
+
+	set color(c) {
+		this._color = c;
+		this.element.style.background = c;
+	}
+
+	get color() {
+		return this._color;
+	}
+
+	relTileAt(x, y) {
+		for (let tile of this.tiles) {
+			if (tile.relX === x && tile.relY === y) {
+				return tile;
+			}
+		}
+		return null;
+	}
+
+	tileAt(x, y) {
+		for (let tile of this.tiles) {
+			if (tile.x === x && tile.y === y) {
+				return tile;
+			}
+		}
+		return null;
+	}
+
+	// Attempt to move in a direction, return true if successful
+	move(x = 0, y = 0) {
+		const px = this.x;
+		const py = this.y;
+		this.x += x;
+		this.y += y;
+
+		// Check whether each tile is still valid
+		for (let tile of this.tiles) {
+			if (tile.x < 0 || tile.y < 0 ||
+				tile.x >= GRID_SIZE || tile.y >= GRID_SIZE ||
+				this.grid.tileAt(tile.x, tile.y, this)) {
+				// Failed to move
+				this.x = px;
+				this.y = py;
+				return false;
+			}
+		}
+
+		// Success!
+		return true;
+	}
+
+	// Clears line
+	clearX(x) {
+		const tiles = [];
+		for (let tile of this.tiles) {
+			if (tile.x === x) {
+				// Remove links
+				if (tile.left) {
+					tile.left.right = null;
+				}
+				if (tile.right) {
+					tile.right.left = null;
+				}
+			} else {
+				tiles.push(tile);
+			}
+		}
+
+		if (tiles.length === this.tiles.length) {
+			return [this];
+		}
+
+		const res = [];
+		const helper = (tile, piece = []) => {
+			const index = tiles.indexOf(tile);
+			if (index !== -1) {
+				tiles.splice(index, 1);
+			}
+			piece.push(tile);
+			if (tile.left && tiles.includes(tile.left)) {
+				helper(tile.left, piece);
+			}
+			if (tile.right && tiles.includes(tile.right)) {
+				helper(tile.right, piece);
+			}
+			if (tile.top && tiles.includes(tile.top)) {
+				helper(tile.top, piece);
+			}
+			if (tile.bottom && tiles.includes(tile.bottom)) {
+				helper(tile.bottom, piece);
+			}
+			return piece;
+		}
+		while (tiles.length !== 0) {
+			res.push(helper(tiles[0]));
+		}
+		return res.map(p => new Piece(
+			p.map(t => [t.relX, t.relY]),
+			this.x,
+			this.y,
+			this.color
+		));
+	}
+
+	clearY(y) {
+		const tiles = [];
+		for (let tile of this.tiles) {
+			if (tile.y === y) {
+				// Remove links
+				if (tile.top) {
+					tile.top.bottom = null;
+				}
+				if (tile.bottom) {
+					tile.bottom.top = null;
+				}
+			} else {
+				tiles.push(tile);
+			}
+		}
+
+		if (tiles.length === this.tiles.length) {
+			return [this];
+		}
+
+		const res = [];
+		const helper = (tile, piece = []) => {
+			const index = tiles.indexOf(tile);
+			if (index !== -1) {
+				tiles.splice(index, 1);
+			}
+			piece.push(tile);
+			if (tile.left && tiles.includes(tile.left)) {
+				helper(tile.left, piece);
+			}
+			if (tile.right && tiles.includes(tile.right)) {
+				helper(tile.right, piece);
+			}
+			if (tile.top && tiles.includes(tile.top)) {
+				helper(tile.top, piece);
+			}
+			if (tile.bottom && tiles.includes(tile.bottom)) {
+				helper(tile.bottom, piece);
+			}
+			return piece;
+		}
+		while (tiles.length !== 0) {
+			res.push(helper(tiles[0]));
+		}
+		return res.map(p => new Piece(
+			p.map(t => [t.relX, t.relY]),
+			this.x,
+			this.y,
+			this.color
+		));
+	}
+
+	createElement() {
+		return $new('.piece')
+			.style({
+				left: `${TILE_SIZE * this.x}em`,
+				top: `${TILE_SIZE * this.y}em`,
+				background: this._color
+			})
+			.init(el => {
+				for (let tile of this.tiles) {
+					el.append(tile.element);
+				}
+			})
+			.element();
+	}
+
+	get element() {
+		if (!this._element) {
+			this._element = this.createElement();
+		}
+		return this._element;
+	}
+}
+
+class Tile {
+
+	constructor(parent, x, y) {
+		this.parent = parent;
+		this.relX = x;
+		this.relY = y;
+		// Edges
+		this.top = null;
+		this.bottom = null;
+		this.left = null;
+		this.right = null;
+	}
+
+	get x() {
+		return this.relX + this.parent.x;
+	}
+
+	get y() {
+		return this.relY + this.parent.y;
+	}
+
+	createElement() {
+		return $new('.tile')
+			.style({
+				left: `${TILE_SIZE * this.relX}em`,
+				top: `${TILE_SIZE * this.relY}em`
+			})
+			.init(el => {
+				// TODO: handle edges
+			})
+			.element();
+	}
+
+	get element() {
+		if (!this._element) {
+			this._element = this.createElement();
+		}
+		return this._element;
+	}
+}
