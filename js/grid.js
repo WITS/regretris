@@ -209,9 +209,9 @@ class Grid {
 		switch(count) {
 			case 0: break;
 			case 1: NAV.score += 4; break;
-			case 1: NAV.score += 10; break;
-			case 1: NAV.score += 30; break;
-			case 1: NAV.score += 120; break;
+			case 2: NAV.score += 10; break;
+			case 3: NAV.score += 30; break;
+			case 4: NAV.score += 120; break;
 			default: NAV.score += 150; break;
 		}
 	}
