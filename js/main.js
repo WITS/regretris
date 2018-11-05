@@ -1,5 +1,7 @@
 // Create grid
 document.on('DOMContentLoaded', () => {
+	NAV = new Nav();
+	document.body.appendChild(NAV.element);
 	GRID = new Grid();
 	document.body.appendChild(GRID.element);
 	GRID.addPiece();
@@ -74,10 +76,10 @@ document.on('DOMContentLoaded', () => {
 	const resize = () => {
 		const size =
 			Math.min(
-				window.innerWidth / (GRID_W + 0.1) / 10,
-				window.innerHeight / (GRID_H + 0.1) / 10
+				window.innerWidth / (GRID_W + 0.1) / TILE_SIZE,
+				window.innerHeight / (NAV_H + GRID_H + 0.1) / TILE_SIZE
 			);
-		GRID.element.style.fontSize = `${size}px`;
+		document.body.style.fontSize = `${size}px`;
 	};
 
 	window.on('resize', resize);

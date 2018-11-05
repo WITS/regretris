@@ -1,5 +1,6 @@
-const GRID_W = 10;
-const GRID_H = 16;
+const GRID_W = 8;
+const GRID_H = 10;
+let NAV_H = 2;
 
 class Grid {
 
@@ -17,6 +18,7 @@ class Grid {
 			if (this.canPlace(piece, x, y)) {
 				piece.x = x;
 				piece.y = y;
+				// NAV.score += 5;
 				wasPlaced = true;
 				return true;
 			}
@@ -179,6 +181,7 @@ class Grid {
 
 	// Check for completed lines
 	check() {
+		let count = 0;
 		// Hor
 		top: for (let y = 0; y < GRID_H; ++ y) {
 			for (let x = 0; x < GRID_W; ++ x) {
@@ -188,6 +191,7 @@ class Grid {
 			}
 			// Clear line
 			this.clearY(y);
+			++ count;
 		}
 		// // Vert
 		// top: for (let x = 0; x < GRID_W; ++ x) {
@@ -198,7 +202,18 @@ class Grid {
 		// 	}
 		// 	// Clear line
 		// 	this.clearX(x);
+		//		++ count;
 		// }
+
+		// Update score
+		switch(count) {
+			case 0: break;
+			case 1: NAV.score += 4; break;
+			case 1: NAV.score += 10; break;
+			case 1: NAV.score += 30; break;
+			case 1: NAV.score += 120; break;
+			default: NAV.score += 150; break;
+		}
 	}
 
 	clearX(x) {
@@ -225,6 +240,8 @@ class Grid {
 			piece.grid = this;
 			this.element.append(piece.element);
 		}
+		// // Update score
+		// NAV.score += 10;
 		// Animate out
 		GRID.element.append($new('.cleared-line')
 			.style({

@@ -1,16 +1,87 @@
+:root {
+	--tile-size: 10em;
+}
+
+body {
+	font-family: Comfortaa, Helvetica, Arial, sans-serif;
+}
+
+nav,
 .grid {
 	position: fixed;
-	font-size: 8px;
 	left: 1em;
-	left: calc(50% - 49.5em);
-	top: 1em;
+	/*left: calc(50% - 49.5em);*/
+	left: calc(50% - 39.5em);
+}
+
+nav {
+	top: 0;
+	width: 81em;
+	color: rgba(0, 0, 0, 0.87);
+}
+
+nav header {
+	padding: 6em 1em;
+	height: 10em;
+	font-weight: normal;
+}
+
+nav header::before {
+	font-size: 5.6em;
+	content: attr(data-text);
+}
+
+nav .number {
+	box-sizing: border-box;
+	position: absolute;
+	right: 0;
+	top: 5em;
+	display: block;
+	width: 20em;
+	height: 10em;
+	padding: 2em;
+	border-radius: 2em;
+}
+
+nav .number.score {
+	right: 22em;
+}
+
+nav .number::before {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	font-size: 1.95em;
+	text-transform: uppercase;
+	color: rgba(0, 0, 0, 0.54);
+	font-weight: bold;
+
+	content: attr(data-label);
+}
+
+nav .number::after {
+	position: absolute;
+	left: 0;
+	top: 0.60em;
+	width: 100%;
+	font-size: 4.2em;
+	font-weight: normal;
+
+	content: attr(data-number);
+}
+
+.grid {
+	/*top: 1em;*/
+	/*top: 21em;*/
+	top: 18em;
 }
 
 .empty {
 	position: absolute;
 	width: 9em;
 	height: 9em;
-	border-radius: 0.5em;
+	border-radius: 0.75em;
 	background: whitesmoke;
 }
 
@@ -18,7 +89,7 @@
 	position: absolute;
 	width: 9em;
 	height: 9em;
-	border-radius: 0.5em;
+	border-radius: 0.75em;
 	background: black;
 	opacity: 0;
 }
@@ -32,7 +103,7 @@
 	background: inherit;
 	width: 9em;
 	height: 9em;
-	border-radius: 0.5em;
+	border-radius: 0.75em;
 }
 
 .tile.border-top {
@@ -61,8 +132,8 @@
 .tile .right {
 	position: absolute;
 	background: inherit;
-	width: 1em;
-	height: 1em;
+	width: 1.25em;
+	height: 1.25em;
 }
 
 .tile .top,
