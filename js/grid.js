@@ -30,6 +30,8 @@ class Grid {
 		for (let i = 0; i < PIECES.length; ++ i) {
 			// Create a piece using this shape
 			const piece = new Piece(PIECES[(index + i) % PIECES.length]);
+			// Fixed?
+			piece.isFixed = (this.pieces.length !== 0 && irandom(10) === 0);
 			// Look for a place to put this
 			if (irandom(100) < 50) {
 				top: for (let x = 0; x < GRID_W; ++ x) {

@@ -106,6 +106,14 @@ nav .number::after {
 	border-radius: 0.75em;
 }
 
+.fixed.piece .tile:first-child,
+.fixed.piece .tile:last-child {
+	background-image: url('../img/fixed-tile.svg');
+	background-position: 50% 50%;
+	background-size: 4em;
+	background-repeat: no-repeat;
+}
+
 .tile.border-top {
 	border-top-left-radius: 0;
 	border-top-right-radius: 0;
@@ -131,7 +139,7 @@ nav .number::after {
 .tile .left,
 .tile .right {
 	position: absolute;
-	background: inherit;
+	background-color: inherit;
 	width: 1.25em;
 	height: 1.25em;
 }

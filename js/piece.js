@@ -2,11 +2,10 @@ const TILE_SIZE = 10;
 
 class Piece {
 
-	constructor(tiles, x = 0, y = 0, color = null) {
+	constructor(tiles, x = 0, y = 0, color = null, isFixed = false) {
 		// Set x & y
 		this._x = x;
 		this._y = y;
-		// this._color = color || choose('red', 'blue', 'green');
 		this._color = color || choose(
 			'#C62828',
 			'#AD1457',
@@ -19,6 +18,7 @@ class Piece {
 			'#4E342E',
 			'#37474F'
 		);
+		this.isFixed = isFixed || false;
 		// Create tile instances
 		this.tiles = tiles.map(t => new Tile(this, t[0], t[1]));
 		// Determine edges
@@ -101,6 +101,11 @@ class Piece {
 
 	// Attempt to move in a direction, return true if successful
 	move(x = 0, y = 0) {
+		// If this piece is fixed
+		if (this.isFixed) {
+			return false;
+		}
+
 		const px = this.x;
 		const py = this.y;
 		this.x += x;
@@ -171,7 +176,8 @@ class Piece {
 			p.map(t => [t.relX, t.relY]),
 			this.x,
 			this.y,
-			this.color
+			this.color,
+			this.isFixed
 		));
 	}
 
@@ -223,7 +229,8 @@ class Piece {
 			p.map(t => [t.relX, t.relY]),
 			this.x,
 			this.y,
-			this.color
+			this.color,
+			this.isFixed
 		));
 	}
 
@@ -235,6 +242,9 @@ class Piece {
 				background: this._color
 			})
 			.init(el => {
+				if (this.isFixed) {
+					el.addClass('fixed');
+				}
 				for (let tile of this.tiles) {
 					el.append(tile.element);
 				}
