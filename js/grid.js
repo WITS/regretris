@@ -31,7 +31,8 @@ class Grid {
 			// Create a piece using this shape
 			const piece = new Piece(PIECES[(index + i) % PIECES.length]);
 			// Fixed?
-			piece.isFixed = (this.pieces.length !== 0 && irandom(10) === 0);
+			const n = Math.max(10, (10000 - NAV.score) / 100);
+			piece.isFixed = (this.pieces.length !== 0 && irandom(n) === 0);
 			// Look for a place to put this
 			if (irandom(100) < 50) {
 				top: for (let x = 0; x < GRID_W; ++ x) {
