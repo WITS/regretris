@@ -93,9 +93,9 @@ class Grid {
 				return true;
 			}
 		}
-		// // Game over
-		alert('Game over');
-		location.reload();
+		// Game over
+		this.end();
+		return false;
 	}
 
 	// Determines whether a piece can be placed at a given location
@@ -120,8 +120,11 @@ class Grid {
 	async move(x = 0, y = 0) {
 		// If moving is disabled
 		if (!this.canMove) {
-			// Queue up move
-			this.moveQueue.push([x, y]);
+			// If the queue isn't too long
+			if (this.moveQueue.length < 3) {
+				// Queue up move
+				this.moveQueue.push([x, y]);
+			}
 			// Stop here
 			return;
 		}
@@ -161,13 +164,14 @@ class Grid {
 		// Check for lines
 		this.check();
 		// Add new piece
-		await this.addPiece();
-		// Renable moving
-		this.canMove = true;
-		// If there's something in the move queue
-		if (this.moveQueue.length !== 0) {
-			const [ x, y ] = this.moveQueue.splice(0, 1)[0];
-			this.move(x, y);
+		if (await this.addPiece()) {
+			// Renable moving
+			this.canMove = true;
+			// If there's something in the move queue
+			if (this.moveQueue.length !== 0) {
+				const [ x, y ] = this.moveQueue.splice(0, 1)[0];
+				this.move(x, y);
+			}
 		}
 	}
 
@@ -295,6 +299,13 @@ class Grid {
 		return this._element;
 	}
 
+	clear() {
+		for (let piece of this.pieces) {
+			piece.element.remove();
+		}
+		this.pieces.splice(0);
+	}
+
 	stow() {
 		localStorage.setItem('regretris-state', JSON.stringify(this.state));
 	}
@@ -307,10 +318,7 @@ class Grid {
 		}
 		const json = JSON.parse(str);
 		// Clear pieces from current memory
-		for (let piece of this.pieces) {
-			piece.element.remove();
-		}
-		this.pieces.splice(0);
+		this.clear();
 		// Load pieces from saved state
 		NAV.score = json.score;
 		for (let p of json.pieces) {
@@ -334,6 +342,45 @@ class Grid {
 			score: NAV.score,
 			pieces: this.pieces.map(p => p.state)
 		};
+	}
+
+	// Called when the game is over
+	end() {
+		// Freeze input
+		this.canMove = false;
+		this.moveQueue.splice(0);
+		// Add the game over overlay
+		this.element.append($new('#end').append(
+			$new('header').text('Game Over'),
+			$new('button.undo')
+				.append(
+					$new('.icon'),
+					$new('label').text('Undo Move')
+				)
+				.on('click', () => this.undo()),
+			$new('button.new')
+				.append(
+					$new('.icon'),
+					$new('label').text('New Game')
+				)
+				.on('click', () => this.newGame())
+		));
+	}
+
+	// Undo the last move
+	undo() {
+		this.element.q('#end').remove();
+		this.restore();
+		this.canMove = true;
+	}
+
+	// Start a new game
+	newGame() {
+		this.element.q('#end').remove();
+		this.clear();
+		NAV.score = 0;
+		this.addPiece();
+		this.canMove = true;
 	}
 }
 
