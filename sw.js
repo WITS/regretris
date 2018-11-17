@@ -3,17 +3,18 @@
  * Copyright (c) 2018 Ian Jones
  */
 
-const CACHE_VERSION = 'beta.001';
+const CACHE_VERSION = 'beta.002';
 
 this.addEventListener('install', event => {
 	event.waitUntil(
 		caches.open(CACHE_VERSION).then(cache => {
 			return cache.addAll([
 				'https://fonts.googleapis.com/css?family=Comfortaa:400,700',
-				// 'https://fonts.googleapis.com/icon?family=Material+Icons',
 				'index.html',
 				'css/style.css',
 				'img/fixed-tile.svg',
+				'img/undo.svg',
+				'img/new.svg',
 				'js/q.js',
 				'js/blueprint.js',
 				'js/transition.js',

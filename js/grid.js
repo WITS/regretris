@@ -8,6 +8,7 @@ class Grid {
 		this.pieces = [];
 		this.moveQueue = [];
 		this.canMove = true;
+		this.hasEnded = false;
 	}
 
 	// Adds a random piece to the grid
@@ -347,6 +348,7 @@ class Grid {
 	// Called when the game is over
 	end() {
 		// Freeze input
+		this.hasEnded = true;
 		this.canMove = false;
 		this.moveQueue.splice(0);
 		// Add the game over overlay
@@ -372,6 +374,7 @@ class Grid {
 		this.element.q('#end').remove();
 		this.restore();
 		this.canMove = true;
+		this.hasEnded = false;
 	}
 
 	// Start a new game
@@ -381,6 +384,7 @@ class Grid {
 		NAV.score = 0;
 		this.addPiece();
 		this.canMove = true;
+		this.hasEnded = false;
 	}
 }
 

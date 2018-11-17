@@ -38,6 +38,12 @@ document.on('DOMContentLoaded', () => {
 	let touchX = 0;
 	let touchY = 0;
 	window.on('touchstart', e => {
+		// If the game is over
+		if (GRID.hasEnded === true) {
+			// Stop here
+			return;
+		}
+		// Otherwise, listen for swipes
 		if (e.touches.length === 1) {
 			touchStartX = e.touches[0].clientX;
 			touchStartY = e.touches[0].clientY;
