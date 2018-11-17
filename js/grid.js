@@ -87,6 +87,8 @@ class Grid {
 				await sleep(250);
 				// Check whether this completes any lines
 				this.check();
+				// Update state in localStorage
+				this.stow();
 				// Success!
 				return true;
 			}
@@ -291,6 +293,47 @@ class Grid {
 			this._element = this.createElement();
 		}
 		return this._element;
+	}
+
+	stow() {
+		localStorage.setItem('regretris-state', JSON.stringify(this.state));
+	}
+
+	restore() {
+		const str = localStorage.getItem('regretris-state');
+		if (!str) {
+			console.log(`Couldn't restore save state`);
+			return false;
+		}
+		const json = JSON.parse(str);
+		// Clear pieces from current memory
+		for (let piece of this.pieces) {
+			piece.element.remove();
+		}
+		this.pieces.splice(0);
+		// Load pieces from saved state
+		NAV.score = json.score;
+		for (let p of json.pieces) {
+			const piece = new Piece(
+				p.tiles,
+				p.x,
+				p.y,
+				p.color,
+				p.isFixed
+			);
+			piece.grid = this;
+			this.pieces.push(piece);
+			this.element.appendChild(piece.element);
+		}
+		// Success!
+		return true;
+	}
+
+	get state() {
+		return {
+			score: NAV.score,
+			pieces: this.pieces.map(p => p.state)
+		};
 	}
 }
 

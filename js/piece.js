@@ -258,6 +258,16 @@ class Piece {
 		}
 		return this._element;
 	}
+
+	get state() {
+		return {
+			tiles: this.tiles.map(t => [t.relX, t.relY]),
+			x: this.x,
+			y: this.y,
+			color: this.color,
+			isFixed: this.isFixed
+		}
+	}
 }
 
 class Tile {

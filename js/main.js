@@ -4,7 +4,11 @@ document.on('DOMContentLoaded', () => {
 	document.body.appendChild(NAV.element);
 	GRID = new Grid();
 	document.body.appendChild(GRID.element);
-	GRID.addPiece();
+	// Attempt to restore previous session
+	if (!GRID.restore()) {
+		// If that fails, start a new session
+		GRID.addPiece();
+	}
 
 	// Keyboard input
 	document.on('keyup', e => {
