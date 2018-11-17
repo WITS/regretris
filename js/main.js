@@ -15,18 +15,22 @@ document.on('DOMContentLoaded', () => {
 		switch (e.which) {
 			// Left
 			case 37:
+			case 65:
 				GRID.move(-1, 0);
 				break;
 			// Right
 			case 39:
+			case 68:
 				GRID.move(1, 0);
 				break;
 			// Up
 			case 38:
+			case 87:
 				GRID.move(0, -1);
 				break;
 			// Down
 			case 40:
+			case 83:
 				GRID.move(0, 1);
 				break;
 		}
