@@ -72,6 +72,26 @@ class Piece {
 		return this._y;
 	}
 
+	// The farthest left index that this piece occupies
+	get left() {
+		return this.tiles.reduce((x, t) => Math.min(t.x, x), GRID_W);
+	}
+
+	// The farthest right index that this piece occupies
+	get right() {
+		return this.tiles.reduce((x, t) => Math.max(t.x, x), -1);
+	}
+
+	// The farthest up index that this piece occupies
+	get top() {
+		return this.tiles.reduce((y, t) => Math.min(t.y, y), GRID_H);
+	}
+
+	// The farthest down index that this piece occupies
+	get bottom() {
+		return this.tiles.reduce((y, t) => Math.min(t.y, y), -1);
+	}
+
 	set color(c) {
 		this._color = c;
 		this.element.style.background = c;
@@ -232,6 +252,16 @@ class Piece {
 			this.color,
 			this.isFixed
 		));
+	}
+
+	// Whether this piece overlaps a given x coordinate
+	overlapsX(x) {
+		return this.tiles.some(t => t.x === x);
+	}
+
+	// Whether this piece overlaps a given y coordinate
+	overlapsY(y) {
+		return this.tiles.some(t => t.y === y);
 	}
 
 	createElement() {
