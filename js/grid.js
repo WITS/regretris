@@ -122,7 +122,7 @@ class Grid {
 		// If moving is disabled
 		if (!this.canMove) {
 			// If the queue isn't too long
-			if (this.moveQueue.length < 3) {
+			if (this.hasEnded === false && this.moveQueue.length < 2) {
 				// Queue up move
 				this.moveQueue.push([x, y]);
 			}
@@ -372,6 +372,7 @@ class Grid {
 	// Undo the last move
 	undo() {
 		this.element.q('#end').remove();
+		this.moveQueue.splice(0);
 		this.restore();
 		this.canMove = true;
 		this.hasEnded = false;
@@ -380,6 +381,7 @@ class Grid {
 	// Start a new game
 	newGame() {
 		this.element.q('#end').remove();
+		this.moveQueue.splice(0);
 		this.clear();
 		NAV.score = 0;
 		this.addPiece();
