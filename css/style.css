@@ -179,6 +179,10 @@ nav .number::after {
 	height: 99em;
 	line-height: 99em;
 	background: rgba(255, 255, 255, 0.31);
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
+	user-select: none;
 }
 
 #hint header {
