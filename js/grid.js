@@ -367,6 +367,7 @@ class Grid {
 				)
 				.on('click', () => this.newGame())
 		));
+		ga('send', 'event', 'Game Over', 'Menu', '', NAV.score);
 	}
 
 	// Undo the last move
@@ -376,6 +377,7 @@ class Grid {
 		this.restore();
 		this.canMove = true;
 		this.hasEnded = false;
+		ga('send', 'event', 'Game Over', 'Undo');
 	}
 
 	// Start a new game
@@ -387,6 +389,7 @@ class Grid {
 		this.addPiece();
 		this.canMove = true;
 		this.hasEnded = false;
+		ga('send', 'event', 'Game Over', 'New Game');
 	}
 }
 
