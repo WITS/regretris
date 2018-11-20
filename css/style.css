@@ -170,6 +170,27 @@ nav .number::after {
 	left: 100%;
 }
 
+#hint {
+	position: absolute;
+	left: 0;
+	top: 0;
+	display: block;
+	width: 79em;
+	height: 99em;
+	line-height: 99em;
+	background: rgba(255, 255, 255, 0.31);
+}
+
+#hint header {
+	font-size: 4.2em;
+	line-height: inherit;
+	text-align: center;
+}
+
+.touch#hint header {
+	font-size: 7.2em;
+}
+
 #end {
 	position: absolute;
 	left: 0;

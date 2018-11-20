@@ -1,3 +1,7 @@
+// Detect touch devices
+const IS_TOUCH_DEVICE = !!(('ontouchstart' in window) ||
+	window.DocumentTouch && document instanceof DocumentTouch);
+
 // Create grid
 document.on('DOMContentLoaded', () => {
 	NAV = new Nav();
@@ -8,6 +12,7 @@ document.on('DOMContentLoaded', () => {
 	if (!GRID.restore()) {
 		// If that fails, start a new session
 		GRID.addPiece();
+		GRID.hint();
 	}
 
 	// Keyboard input

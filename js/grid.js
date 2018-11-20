@@ -161,6 +161,9 @@ class Grid {
 				aspectRatio: 'none'
 			});
 		}
+		// Remove this hint
+		document.q('#hint').each(el => el.remove());
+		// Wait for animation to finish
 		await sleep(duration);
 		// Check for lines
 		this.check();
@@ -390,6 +393,24 @@ class Grid {
 		this.canMove = true;
 		this.hasEnded = false;
 		ga('send', 'event', 'Game Over', 'New Game');
+	}
+
+	// Hint about controls
+	hint() {
+		let message;
+		if (IS_TOUCH_DEVICE) {
+			message = 'swipe to move';
+		} else {
+			message = 'use the arrow keys to move';
+		}
+		// Add the hint overlay
+		this.element.append($new('#hint')
+			.class(IS_TOUCH_DEVICE ? 'touch' : 'mouse')
+			.append(
+				$new('header').text(message)
+			)
+		);
+		ga('send', 'event', 'Game Over', 'Menu', '', NAV.score);
 	}
 }
 
