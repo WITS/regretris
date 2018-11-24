@@ -355,8 +355,15 @@ class Grid {
 		this.canMove = false;
 		this.moveQueue.splice(0);
 		// Add the game over overlay
+		const tweetText = encodeURIComponent(`I just got ${NAV.score
+			} playing Regretris! Can you beat my score?`);
 		this.element.append($new('#end').append(
 			$new('header').text('Game Over'),
+			$new('a.share')
+				.text('Share')
+				.attr('target', '_blank')
+				.attr('href', `https://twitter.com/intent/tweet?text=${tweetText
+					}&url=https://ian.link/regretris`),
 			$new('button.undo')
 				.append(
 					$new('.icon'),

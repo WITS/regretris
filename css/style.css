@@ -217,6 +217,31 @@ nav .number::after {
 	font-size: 5.6em;
 }
 
+#end .share {
+	position: absolute;
+	left: 0;
+	top: 13em;
+	display: block;
+	width: 100%;
+	height: 1em;
+	line-height: 1em;
+	font-size: 2.4em;
+	text-align: center;
+	text-decoration: none;
+	color: inherit;
+}
+
+#end .share::before {
+	display: inline-block;
+	width: 1em;
+	height: 1em;
+	margin-right: 0.5em;
+	background-image: url(../img/twitter.svg);
+	background-size: 1em;
+	background-repeat: no-repeat;
+	content: '';
+}
+
 #end button {
 	position: absolute;
 	bottom: 0;
